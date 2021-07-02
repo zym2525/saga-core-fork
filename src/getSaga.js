@@ -1,16 +1,16 @@
 import invariant from 'invariant';
 import warning from 'warning';
-import { effects as sagaEffects } from 'redux-saga';
+import * as sagaEffects from 'redux-saga/effects';
 import { NAMESPACE_SEP } from './constants';
 import prefixType from './prefixType';
 
 export default function getSaga(effects, model, onError, onEffect, opts = {}) {
-  return function*() {
+  return function* () {
     for (const key in effects) {
       if (Object.prototype.hasOwnProperty.call(effects, key)) {
         const watcher = getWatcher(key, effects[key], model, onError, onEffect, opts);
         const task = yield sagaEffects.fork(watcher);
-        yield sagaEffects.fork(function*() {
+        yield sagaEffects.fork(function* () {
           yield sagaEffects.take(`${model.namespace}/@@CANCEL_EFFECTS`);
           yield sagaEffects.cancel(task);
         });
@@ -45,7 +45,7 @@ function getWatcher(key, _effect, model, onError, onEffect, opts) {
     );
   }
 
-  function noop() {}
+  function noop() { }
 
   function* sagaWithCatch(...args) {
     const { __dva_resolve: resolve = noop, __dva_reject: reject = noop } =
@@ -72,15 +72,15 @@ function getWatcher(key, _effect, model, onError, onEffect, opts) {
     case 'watcher':
       return sagaWithCatch;
     case 'takeLatest':
-      return function*() {
+      return function* () {
         yield sagaEffects.takeLatest(key, sagaWithOnEffect);
       };
     case 'throttle':
-      return function*() {
+      return function* () {
         yield sagaEffects.throttle(ms, key, sagaWithOnEffect);
       };
     case 'poll':
-      return function*() {
+      return function* () {
         function delay(timeout) {
           return new Promise(resolve => setTimeout(resolve, timeout));
         }
@@ -98,7 +98,7 @@ function getWatcher(key, _effect, model, onError, onEffect, opts) {
         }
       };
     default:
-      return function*() {
+      return function* () {
         yield sagaEffects.takeEvery(key, sagaWithOnEffect);
       };
   }
@@ -131,7 +131,7 @@ function createEffects(model, opts) {
   function putResolve(action) {
     const { type } = action;
     assertAction(type, 'sagaEffects.put.resolve');
-    return sagaEffects.put.resolve({
+    return sagaEffects.putResolve({
       ...action,
       type: prefixType(type, model),
     });

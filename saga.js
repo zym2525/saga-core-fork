@@ -1,1 +1,1 @@
-module.exports = require('redux-saga');
+export * from 'redux-saga/effects'
