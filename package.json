@@ -2,15 +2,12 @@
   "name": "@zero-d/dva-core",
   "version": "1.0.0",
   "description": "The core lightweight library for dva, based on redux and redux-saga.",
-  "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "main": "src/index.js",
   "sideEffects": false,
   "scripts": {
     "release": "dotenv release-it --"
   },
   "keywords": [
-    "dva",
-    "alibaba",
     "redux",
     "redux-saga",
     "elm",
@@ -39,8 +36,6 @@
     "release-it": "^14.10.0"
   },
   "files": [
-    "dist",
-    "lib",
     "src",
     "index.js",
     "saga.js"
