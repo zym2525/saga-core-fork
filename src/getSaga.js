@@ -21,7 +21,7 @@ export default function getSaga(effects, model, onError, onEffect, opts = {}) {
 
 function getWatcher(key, _effect, model, onError, onEffect, opts) {
   let effect = _effect;
-  let type = 'takeEvery';
+  let type = 'takeLatest';
   let ms;
   let delayMs;
 
